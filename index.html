@@ -14,7 +14,10 @@
       --black: #1a1a2e; --white: #FFFFFF; --bg: #FFF8DC;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Nunito', -apple-system, 'Segoe UI', sans-serif; background: var(--bg); color: var(--black); overflow-x: hidden; min-height: 100vh; position: relative; }
+    
+    html, body { width: 100%; height: 100%; }
+    html { background: var(--bg); }
+body { font-family: 'Nunito', -apple-system, 'Segoe UI', sans-serif; background: var(--bg); color: var(--black); overflow-x: hidden; min-height: 100vh; position: relative; }
     body::before { content: ''; position: fixed; inset: 0; background-image: radial-gradient(circle, var(--black) 1px, transparent 1px); background-size: 24px 24px; opacity: 0.04; pointer-events: none; z-index: 0; }
 
     .bg-shapes { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
@@ -714,26 +717,23 @@
   (function () {
     if (!window.Telegram || !window.Telegram.WebApp) return;
     const tg = window.Telegram.WebApp;
+
     tg.ready();
     tg.expand();
 
-    // Apply Telegram theme colors (optional)
+    // Force Telegram container colors to match the site (so the background never "disappears")
     try {
-      const p = tg.themeParams || {};
-      if (p.bg_color) document.documentElement.style.setProperty('--bg', p.bg_color);
-      if (p.text_color) document.documentElement.style.setProperty('--black', p.text_color);
+      tg.setBackgroundColor('#FFF8DC');
+      tg.setHeaderColor('#FFF8DC');
     } catch (e) {}
 
-    // Example: haptic on generate click (if supported)
+    // Haptic on generate click (if supported)
     const btn = document.getElementById('generateBtn');
     if (btn) {
       btn.addEventListener('click', () => {
         try { tg.HapticFeedback.impactOccurred('medium'); } catch (e) {}
       });
     }
-
-    // Send "excuse generated" back to bot (optional)
-    // To enable, uncomment inside displayExcuse() in your main script below.
   })();
 </script>
 
